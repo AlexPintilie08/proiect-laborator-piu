@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("proiect piu")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+38225b560bcf72bc7ca4440334a61c7da59a78fe")]
 [assembly: System.Reflection.AssemblyProductAttribute("proiect piu")]
 [assembly: System.Reflection.AssemblyTitleAttribute("proiect piu")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

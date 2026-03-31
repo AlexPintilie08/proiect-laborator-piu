@@ -1,11 +1,49 @@
 {
   "version": 3,
   "targets": {
-    "net10.0": {}
+    "net10.0": {
+      "Transporturi.Entitati/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v10.0",
+        "compile": {
+          "bin/placeholder/Transporturi.Entitati.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/Transporturi.Entitati.dll": {}
+        }
+      },
+      "Transporturi.StocareDate/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v10.0",
+        "dependencies": {
+          "Transporturi.Entitati": "1.0.0"
+        },
+        "compile": {
+          "bin/placeholder/Transporturi.StocareDate.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/Transporturi.StocareDate.dll": {}
+        }
+      }
+    }
   },
-  "libraries": {},
+  "libraries": {
+    "Transporturi.Entitati/1.0.0": {
+      "type": "project",
+      "path": "../Transporturi.Entitati/Transporturi.Entitati.csproj",
+      "msbuildProject": "../Transporturi.Entitati/Transporturi.Entitati.csproj"
+    },
+    "Transporturi.StocareDate/1.0.0": {
+      "type": "project",
+      "path": "../Transporturi.StocareDate/Transporturi.StocareDate.csproj",
+      "msbuildProject": "../Transporturi.StocareDate/Transporturi.StocareDate.csproj"
+    }
+  },
   "projectFileDependencyGroups": {
-    "net10.0": []
+    "net10.0": [
+      "Transporturi.Entitati >= 1.0.0",
+      "Transporturi.StocareDate >= 1.0.0"
+    ]
   },
   "packageFolders": {
     "C:\\Users\\Alex\\.nuget\\packages\\": {}
@@ -33,7 +71,14 @@
       "frameworks": {
         "net10.0": {
           "targetAlias": "net10.0",
-          "projectReferences": {}
+          "projectReferences": {
+            "C:\\Users\\Alex\\source\\repos\\proiect piu\\Transporturi.Entitati\\Transporturi.Entitati.csproj": {
+              "projectPath": "C:\\Users\\Alex\\source\\repos\\proiect piu\\Transporturi.Entitati\\Transporturi.Entitati.csproj"
+            },
+            "C:\\Users\\Alex\\source\\repos\\proiect piu\\Transporturi.StocareDate\\Transporturi.StocareDate.csproj": {
+              "projectPath": "C:\\Users\\Alex\\source\\repos\\proiect piu\\Transporturi.StocareDate\\Transporturi.StocareDate.csproj"
+            }
+          }
         }
       },
       "warningProperties": {
