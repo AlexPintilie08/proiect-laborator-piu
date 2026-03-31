@@ -1,0 +1,5 @@
+<Solution>
+  <Project Path="Transport.App/Transport.App.csproj" />
+  <Project Path="Transporturi.Entitati/Transporturi.Entitati.csproj" />
+  <Project Path="Transporturi.StocareDate/Transporturi.StocareDate.csproj" />
+</Solution>

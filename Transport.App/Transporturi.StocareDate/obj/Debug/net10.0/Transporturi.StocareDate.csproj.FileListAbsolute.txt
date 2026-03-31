@@ -1,0 +1,16 @@
+C:\Users\Alex\source\repos\proiect piu\Transport.App\Transporturi.StocareDate\bin\Debug\net10.0\Transporturi.StocareDate.deps.json
+C:\Users\Alex\source\repos\proiect piu\Transport.App\Transporturi.StocareDate\bin\Debug\net10.0\Transporturi.StocareDate.dll
+C:\Users\Alex\source\repos\proiect piu\Transport.App\Transporturi.StocareDate\bin\Debug\net10.0\Transporturi.StocareDate.pdb
+C:\Users\Alex\source\repos\proiect piu\Transport.App\Transporturi.StocareDate\bin\Debug\net10.0\Transporturi.Entitati.dll
+C:\Users\Alex\source\repos\proiect piu\Transport.App\Transporturi.StocareDate\bin\Debug\net10.0\Transporturi.Entitati.pdb
+C:\Users\Alex\source\repos\proiect piu\Transport.App\Transporturi.StocareDate\obj\Debug\net10.0\Transporturi.StocareDate.csproj.AssemblyReference.cache
+C:\Users\Alex\source\repos\proiect piu\Transport.App\Transporturi.StocareDate\obj\Debug\net10.0\Transporturi.StocareDate.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Alex\source\repos\proiect piu\Transport.App\Transporturi.StocareDate\obj\Debug\net10.0\Transporturi.StocareDate.AssemblyInfoInputs.cache
+C:\Users\Alex\source\repos\proiect piu\Transport.App\Transporturi.StocareDate\obj\Debug\net10.0\Transporturi.StocareDate.AssemblyInfo.cs
+C:\Users\Alex\source\repos\proiect piu\Transport.App\Transporturi.StocareDate\obj\Debug\net10.0\Transporturi.StocareDate.csproj.CoreCompileInputs.cache
+C:\Users\Alex\source\repos\proiect piu\Transport.App\Transporturi.StocareDate\obj\Debug\net10.0\Transporturi.StocareDate.sourcelink.json
+C:\Users\Alex\source\repos\proiect piu\Transport.App\Transporturi.StocareDate\obj\Debug\net10.0\Transpor.8B2B5497.Up2Date
+C:\Users\Alex\source\repos\proiect piu\Transport.App\Transporturi.StocareDate\obj\Debug\net10.0\Transporturi.StocareDate.dll
+C:\Users\Alex\source\repos\proiect piu\Transport.App\Transporturi.StocareDate\obj\Debug\net10.0\refint\Transporturi.StocareDate.dll
+C:\Users\Alex\source\repos\proiect piu\Transport.App\Transporturi.StocareDate\obj\Debug\net10.0\Transporturi.StocareDate.pdb
+C:\Users\Alex\source\repos\proiect piu\Transport.App\Transporturi.StocareDate\obj\Debug\net10.0\ref\Transporturi.StocareDate.dll
