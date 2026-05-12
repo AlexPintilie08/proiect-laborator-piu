@@ -1,39 +1,68 @@
 ﻿using System.Windows;
+using System.Windows.Media;
 using Transporturi.Entitati;
 
-namespace Transporturi.WPF
+namespace Transporturi
 {
     public partial class MainWindow : Window
     {
-        private Sofer sofer;
+        private const int KM_MIN = 0;
+        private const int KM_MAX = 1000000;
 
         public MainWindow()
         {
             InitializeComponent();
+        }
 
-            sofer = new Sofer
+        private void BtnAdauga_Click(object sender, RoutedEventArgs e)
+        {
+            bool valid = true;
+
+            txtNume.Background = Brushes.White;
+            txtCategorii.Background = Brushes.White;
+            txtKilometri.Background = Brushes.White;
+
+            txtMesaj.Text = "";
+
+            if (string.IsNullOrWhiteSpace(txtNume.Text))
+            {
+                txtNume.Background = Brushes.LightPink;
+                valid = false;
+            }
+
+            if (string.IsNullOrWhiteSpace(txtCategorii.Text))
+            {
+                txtCategorii.Background = Brushes.LightPink;
+                valid = false;
+            }
+
+            int kilometri;
+
+            if (!int.TryParse(txtKilometri.Text, out kilometri) ||
+                kilometri < KM_MIN ||
+                kilometri > KM_MAX)
+            {
+                txtKilometri.Background = Brushes.LightPink;
+                valid = false;
+            }
+
+            if (!valid)
+            {
+                txtMesaj.Foreground = Brushes.Red;
+                txtMesaj.Text = "Date invalide!";
+                return;
+            }
+
+            Sofer s = new Sofer
             {
                 Id = 1,
-                Nume = "Popescu Ion",
-                CategoriiPermis = "B, C, E",
-                Kilometri = 120000
+                Nume = txtNume.Text,
+                CategoriiPermis = txtCategorii.Text,
+                Kilometri = kilometri
             };
 
-            AfiseazaSofer();
-        }
-
-        private void AfiseazaSofer()
-        {
-            TxtId.Text = $"ID: {sofer.Id}";
-            TxtNume.Text = $"Nume: {sofer.Nume}";
-            TxtCategorii.Text = $"Categorii permis: {sofer.CategoriiPermis}";
-            TxtKilometri.Text = $"Kilometri: {sofer.Kilometri}";
-        }
-
-        private void BtnActualizeaza_Click(object sender, RoutedEventArgs e)
-        {
-            sofer.Kilometri += 1000;
-            AfiseazaSofer();
+            txtMesaj.Foreground = Brushes.Green;
+            txtMesaj.Text = $"Șofer adăugat: {s.Nume}";
         }
     }
 }

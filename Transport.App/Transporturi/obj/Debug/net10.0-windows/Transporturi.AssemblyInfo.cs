@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Transporturi")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+74a00e00b0312fd37f1230c8c203f85c1f4c410a")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+0a908ab8e3bef0123221756ea854bab266bfc8f1")]
 [assembly: System.Reflection.AssemblyProductAttribute("Transporturi")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Transporturi")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
