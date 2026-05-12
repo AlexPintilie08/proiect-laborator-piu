@@ -10,6 +10,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Transporturi.Entitati\Transporturi.Entitati.csproj" />
+    <ProjectReference Include="..\Transporturi.StocareDate\Transporturi.StocareDate.csproj" />
   </ItemGroup>
 
 </Project>

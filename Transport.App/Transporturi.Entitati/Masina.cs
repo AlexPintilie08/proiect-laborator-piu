@@ -14,6 +14,10 @@
         {
             Numar = string.Empty;
             Marca = string.Empty;
+            AnFabricatie = 0;
+            Kilometri = 0;
+            Culoare = CuloareMasina.Necunoscuta;
+            Optiuni = OptiuniMasina.Niciuna;
         }
 
         public string ConversieLaSirPentruFisier()
@@ -23,7 +27,12 @@
 
         public string Info()
         {
-            return $"Nr: {Numar}, Marca: {Marca}, An: {AnFabricatie}, Km: {Kilometri}, Culoare: {Culoare}, Optiuni: {Optiuni}";
+            return $"{Numar} - {Marca} - {AnFabricatie} - {Kilometri} km - {Culoare} - {Optiuni}";
+        }
+
+        public override string ToString()
+        {
+            return $"{Numar} | {Marca} | {AnFabricatie} | {Kilometri} km";
         }
     }
 }

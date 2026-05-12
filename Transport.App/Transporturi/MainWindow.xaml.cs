@@ -1,170 +1,149 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Media;
 using Transporturi.Entitati;
+using Transporturi.StocareDate;
 
 namespace Transporturi
 {
-    public partial class MainWindow : Window
+    public partial class MainWindow : Window, INotifyPropertyChanged
     {
-        private List<Sofer> soferi = new List<Sofer>();
+        private AdministrareMasini adminMasini;
 
-        private const int KM_MIN = 0;
-        private const int KM_MAX = 1000000;
+        private Masina masinaCurenta;
+        private Masina masinaSelectata;
+        private string mesaj;
+
+        public ObservableCollection<Masina> Masini { get; set; }
+
+        public ObservableCollection<CuloareMasina> Culori { get; set; }
+
+        public Masina MasinaCurenta
+        {
+            get => masinaCurenta;
+            set
+            {
+                masinaCurenta = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public Masina MasinaSelectata
+        {
+            get => masinaSelectata;
+            set
+            {
+                masinaSelectata = value;
+
+                if (value != null)
+                {
+                    MasinaCurenta = new Masina
+                    {
+                        Numar = value.Numar,
+                        Marca = value.Marca,
+                        AnFabricatie = value.AnFabricatie,
+                        Kilometri = value.Kilometri,
+                        Culoare = value.Culoare,
+                        Optiuni = value.Optiuni
+                    };
+                }
+
+                OnPropertyChanged();
+            }
+        }
+
+        public string Mesaj
+        {
+            get => mesaj;
+            set
+            {
+                mesaj = value;
+                OnPropertyChanged();
+            }
+        }
 
         public MainWindow()
         {
             InitializeComponent();
 
-            dpDataAngajare.SelectedDate = DateTime.Today;
-            dpDataActualizare.SelectedDate = DateTime.Today;
-        }
+            adminMasini = new AdministrareMasini();
 
-        private void BtnAdauga_Click(object sender, RoutedEventArgs e)
-        {
-            bool valid = true;
+            Masini = adminMasini.Read();
 
-            txtNume.Background = Brushes.White;
-            txtCategorii.Background = Brushes.White;
-            txtKilometri.Background = Brushes.White;
-            txtMesaj.Text = "";
-
-            if (string.IsNullOrWhiteSpace(txtNume.Text))
+            Culori = new ObservableCollection<CuloareMasina>
             {
-                txtNume.Background = Brushes.LightPink;
-                valid = false;
-            }
-
-            if (string.IsNullOrWhiteSpace(txtCategorii.Text))
-            {
-                txtCategorii.Background = Brushes.LightPink;
-                valid = false;
-            }
-
-            if (!int.TryParse(txtKilometri.Text, out int kilometri) ||
-                kilometri < KM_MIN ||
-                kilometri > KM_MAX)
-            {
-                txtKilometri.Background = Brushes.LightPink;
-                valid = false;
-            }
-
-            if (lstTipSofer.SelectedItem == null)
-            {
-                txtMesaj.Foreground = Brushes.Red;
-                txtMesaj.Text = "Alege tipul șoferului.";
-                return;
-            }
-
-            if (!valid)
-            {
-                txtMesaj.Foreground = Brushes.Red;
-                txtMesaj.Text = "Date invalide!";
-                return;
-            }
-
-            string tipSofer = ((ListBoxItem)lstTipSofer.SelectedItem).Content.ToString();
-            DateTime dataAngajare = dpDataAngajare.SelectedDate ?? DateTime.Today;
-
-            Sofer sofer = new Sofer
-            {
-                Id = soferi.Count + 1,
-                Nume = txtNume.Text,
-                CategoriiPermis = txtCategorii.Text,
-                Kilometri = kilometri
+                CuloareMasina.Alb,
+                CuloareMasina.Negru,
+                CuloareMasina.Rosu
             };
 
-            soferi.Add(sofer);
+            MasinaCurenta = new Masina();
 
-            ActualizeazaSurseDate();
-            AfiseazaLista(soferi);
-
-            txtMesaj.Foreground = Brushes.Green;
-            txtMesaj.Text = $"Șofer adăugat: {sofer.Nume}, tip: {tipSofer}, data: {dataAngajare.ToShortDateString()}";
+            DataContext = this;
         }
 
-        private void CmbSoferi_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void BtnCreate_Click(object sender, RoutedEventArgs e)
         {
-            if (cmbSoferi.SelectedItem is Sofer sofer)
+            adminMasini.Create(new Masina
             {
-                txtNumeModifica.Text = sofer.Nume;
-                txtCategoriiModifica.Text = sofer.CategoriiPermis;
-                txtKilometriModifica.Text = sofer.Kilometri.ToString();
-                dpDataActualizare.SelectedDate = DateTime.Today;
-            }
+                Numar = MasinaCurenta.Numar,
+                Marca = MasinaCurenta.Marca,
+                AnFabricatie = MasinaCurenta.AnFabricatie,
+                Kilometri = MasinaCurenta.Kilometri,
+                Culoare = MasinaCurenta.Culoare,
+                Optiuni = MasinaCurenta.Optiuni
+            });
+
+            Mesaj = "Mașină adăugată.";
+
+            MasinaCurenta = new Masina();
         }
 
-        private void BtnActualizeaza_Click(object sender, RoutedEventArgs e)
+        private void BtnUpdate_Click(object sender, RoutedEventArgs e)
         {
-            if (cmbSoferi.SelectedItem is not Sofer soferSelectat)
+            if (MasinaSelectata == null)
             {
-                txtMesaj.Foreground = Brushes.Red;
-                txtMesaj.Text = "Selectează un șofer pentru modificare.";
+                Mesaj = "Selectează o mașină.";
                 return;
             }
 
-            if (string.IsNullOrWhiteSpace(txtNumeModifica.Text) ||
-                string.IsNullOrWhiteSpace(txtCategoriiModifica.Text) ||
-                !int.TryParse(txtKilometriModifica.Text, out int kilometriNoi) ||
-                kilometriNoi < KM_MIN ||
-                kilometriNoi > KM_MAX)
+            bool rezultat = adminMasini.Update(
+                MasinaSelectata.Numar,
+                MasinaCurenta
+            );
+
+            Mesaj = rezultat
+                ? "Mașină modificată."
+                : "Modificare eșuată.";
+        }
+
+        private void BtnDelete_Click(object sender, RoutedEventArgs e)
+        {
+            if (MasinaSelectata == null)
             {
-                txtMesaj.Foreground = Brushes.Red;
-                txtMesaj.Text = "Date invalide la modificare.";
+                Mesaj = "Selectează o mașină.";
                 return;
             }
 
-            soferSelectat.Nume = txtNumeModifica.Text;
-            soferSelectat.CategoriiPermis = txtCategoriiModifica.Text;
-            soferSelectat.Kilometri = kilometriNoi;
+            bool rezultat = adminMasini.Delete(
+                MasinaSelectata.Numar
+            );
 
-            DateTime dataActualizare = dpDataActualizare.SelectedDate ?? DateTime.Today;
-
-            ActualizeazaSurseDate();
-            AfiseazaLista(soferi);
-
-            txtMesaj.Foreground = Brushes.Green;
-            txtMesaj.Text = $"Șofer modificat la data {dataActualizare.ToShortDateString()}.";
+            Mesaj = rezultat
+                ? "Mașină ștearsă."
+                : "Ștergere eșuată.";
         }
 
-        private void BtnCauta_Click(object sender, RoutedEventArgs e)
+        public event PropertyChangedEventHandler? PropertyChanged;
+
+        private void OnPropertyChanged(
+            [CallerMemberName] string propertyName = null)
         {
-            string cautare = txtCautare.Text.ToLower();
-
-            List<Sofer> rezultate = soferi
-                .Where(s => s.Nume.ToLower().Contains(cautare))
-                .ToList();
-
-            AfiseazaLista(rezultate);
-        }
-
-        private void BtnAfiseazaToti_Click(object sender, RoutedEventArgs e)
-        {
-            AfiseazaLista(soferi);
-        }
-
-        private void AfiseazaLista(List<Sofer> lista)
-        {
-            lstSoferi.Items.Clear();
-
-            foreach (Sofer s in lista)
-            {
-                lstSoferi.Items.Add($"{s.Id} | {s.Nume} | {s.CategoriiPermis} | {s.Kilometri} km");
-            }
-        }
-
-        private void ActualizeazaSurseDate()
-        {
-            cmbSoferi.ItemsSource = null;
-            cmbSoferi.ItemsSource = soferi;
-        }
-
-        private void Exit_Click(object sender, RoutedEventArgs e)
-        {
-            Close();
+            PropertyChanged?.Invoke(
+                this,
+                new PropertyChangedEventArgs(propertyName)
+            );
         }
     }
 }
