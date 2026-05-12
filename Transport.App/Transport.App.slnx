@@ -2,4 +2,5 @@
   <Project Path="Transport.App/Transport.App.csproj" />
   <Project Path="Transporturi.Entitati/Transporturi.Entitati.csproj" />
   <Project Path="Transporturi.StocareDate/Transporturi.StocareDate.csproj" />
+  <Project Path="Transporturi/Transporturi.csproj" Id="0caf336f-0c76-4e78-98c1-5b09bee902b4" />
 </Solution>
