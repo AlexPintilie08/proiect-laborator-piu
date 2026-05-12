@@ -1,6 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Media;
 using Transporturi.Entitati;
 
@@ -16,6 +18,9 @@ namespace Transporturi
         public MainWindow()
         {
             InitializeComponent();
+
+            dpDataAngajare.SelectedDate = DateTime.Today;
+            dpDataActualizare.SelectedDate = DateTime.Today;
         }
 
         private void BtnAdauga_Click(object sender, RoutedEventArgs e)
@@ -23,10 +28,8 @@ namespace Transporturi
             bool valid = true;
 
             txtNume.Background = Brushes.White;
-            txtTelefon.Background = Brushes.White;
             txtCategorii.Background = Brushes.White;
             txtKilometri.Background = Brushes.White;
-
             txtMesaj.Text = "";
 
             if (string.IsNullOrWhiteSpace(txtNume.Text))
@@ -35,20 +38,25 @@ namespace Transporturi
                 valid = false;
             }
 
-            if (string.IsNullOrWhiteSpace(txtTelefon.Text))
+            if (string.IsNullOrWhiteSpace(txtCategorii.Text))
             {
-                txtTelefon.Background = Brushes.LightPink;
+                txtCategorii.Background = Brushes.LightPink;
                 valid = false;
             }
 
-            int km;
-
-            if (!int.TryParse(txtKilometri.Text, out km) ||
-                km < KM_MIN ||
-                km > KM_MAX)
+            if (!int.TryParse(txtKilometri.Text, out int kilometri) ||
+                kilometri < KM_MIN ||
+                kilometri > KM_MAX)
             {
                 txtKilometri.Background = Brushes.LightPink;
                 valid = false;
+            }
+
+            if (lstTipSofer.SelectedItem == null)
+            {
+                txtMesaj.Foreground = Brushes.Red;
+                txtMesaj.Text = "Alege tipul șoferului.";
+                return;
             }
 
             if (!valid)
@@ -58,50 +66,100 @@ namespace Transporturi
                 return;
             }
 
-            string tipAngajat = rbIntern.IsChecked == true
-                ? "Intern"
-                : "Extern";
+            string tipSofer = ((ListBoxItem)lstTipSofer.SelectedItem).Content.ToString();
+            DateTime dataAngajare = dpDataAngajare.SelectedDate ?? DateTime.Today;
 
-            string beneficii = "";
-
-            if (cbBonus.IsChecked == true)
-                beneficii += "Bonus ";
-
-            if (cbAsigurare.IsChecked == true)
-                beneficii += "Asigurare";
-
-            Sofer s = new Sofer
+            Sofer sofer = new Sofer
             {
                 Id = soferi.Count + 1,
                 Nume = txtNume.Text,
                 CategoriiPermis = txtCategorii.Text,
-                Kilometri = km
+                Kilometri = kilometri
             };
 
-            soferi.Add(s);
+            soferi.Add(sofer);
 
-            lstSoferi.Items.Add(
-                $"{s.Id} | {s.Nume} | {tipAngajat} | {beneficii}");
+            ActualizeazaSurseDate();
+            AfiseazaLista(soferi);
 
             txtMesaj.Foreground = Brushes.Green;
-            txtMesaj.Text = "Șofer adăugat!";
+            txtMesaj.Text = $"Șofer adăugat: {sofer.Nume}, tip: {tipSofer}, data: {dataAngajare.ToShortDateString()}";
+        }
+
+        private void CmbSoferi_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (cmbSoferi.SelectedItem is Sofer sofer)
+            {
+                txtNumeModifica.Text = sofer.Nume;
+                txtCategoriiModifica.Text = sofer.CategoriiPermis;
+                txtKilometriModifica.Text = sofer.Kilometri.ToString();
+                dpDataActualizare.SelectedDate = DateTime.Today;
+            }
+        }
+
+        private void BtnActualizeaza_Click(object sender, RoutedEventArgs e)
+        {
+            if (cmbSoferi.SelectedItem is not Sofer soferSelectat)
+            {
+                txtMesaj.Foreground = Brushes.Red;
+                txtMesaj.Text = "Selectează un șofer pentru modificare.";
+                return;
+            }
+
+            if (string.IsNullOrWhiteSpace(txtNumeModifica.Text) ||
+                string.IsNullOrWhiteSpace(txtCategoriiModifica.Text) ||
+                !int.TryParse(txtKilometriModifica.Text, out int kilometriNoi) ||
+                kilometriNoi < KM_MIN ||
+                kilometriNoi > KM_MAX)
+            {
+                txtMesaj.Foreground = Brushes.Red;
+                txtMesaj.Text = "Date invalide la modificare.";
+                return;
+            }
+
+            soferSelectat.Nume = txtNumeModifica.Text;
+            soferSelectat.CategoriiPermis = txtCategoriiModifica.Text;
+            soferSelectat.Kilometri = kilometriNoi;
+
+            DateTime dataActualizare = dpDataActualizare.SelectedDate ?? DateTime.Today;
+
+            ActualizeazaSurseDate();
+            AfiseazaLista(soferi);
+
+            txtMesaj.Foreground = Brushes.Green;
+            txtMesaj.Text = $"Șofer modificat la data {dataActualizare.ToShortDateString()}.";
         }
 
         private void BtnCauta_Click(object sender, RoutedEventArgs e)
         {
             string cautare = txtCautare.Text.ToLower();
 
-            var rezultate = soferi
+            List<Sofer> rezultate = soferi
                 .Where(s => s.Nume.ToLower().Contains(cautare))
                 .ToList();
 
+            AfiseazaLista(rezultate);
+        }
+
+        private void BtnAfiseazaToti_Click(object sender, RoutedEventArgs e)
+        {
+            AfiseazaLista(soferi);
+        }
+
+        private void AfiseazaLista(List<Sofer> lista)
+        {
             lstSoferi.Items.Clear();
 
-            foreach (var s in rezultate)
+            foreach (Sofer s in lista)
             {
-                lstSoferi.Items.Add(
-                    $"{s.Id} | {s.Nume} | {s.CategoriiPermis}");
+                lstSoferi.Items.Add($"{s.Id} | {s.Nume} | {s.CategoriiPermis} | {s.Kilometri} km");
             }
+        }
+
+        private void ActualizeazaSurseDate()
+        {
+            cmbSoferi.ItemsSource = null;
+            cmbSoferi.ItemsSource = soferi;
         }
 
         private void Exit_Click(object sender, RoutedEventArgs e)

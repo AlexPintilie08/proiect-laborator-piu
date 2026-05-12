@@ -1,31 +1,37 @@
 ﻿<Window x:Class="Transporturi.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="Management Transporturi"
-        Height="650"
-        Width="900"
+        Title="Management Transporturi - Lab 9"
+        Height="700"
+        Width="950"
         WindowStartupLocation="CenterScreen"
         Background="#F2F2F2">
 
     <Window.Resources>
-
         <Style TargetType="Button">
             <Setter Property="Background" Value="#1F3D2B"/>
             <Setter Property="Foreground" Value="White"/>
             <Setter Property="FontWeight" Value="Bold"/>
-            <Setter Property="Height" Value="40"/>
+            <Setter Property="Height" Value="38"/>
             <Setter Property="Margin" Value="0 10 0 0"/>
         </Style>
 
         <Style TargetType="TextBox">
-            <Setter Property="Height" Value="35"/>
-            <Setter Property="Margin" Value="0 5 0 15"/>
+            <Setter Property="Height" Value="32"/>
+            <Setter Property="Margin" Value="0 5 0 12"/>
         </Style>
 
+        <Style TargetType="ComboBox">
+            <Setter Property="Height" Value="32"/>
+            <Setter Property="Margin" Value="0 5 0 12"/>
+        </Style>
+
+        <Style TargetType="ListBox">
+            <Setter Property="Margin" Value="0 5 0 12"/>
+        </Style>
     </Window.Resources>
 
     <Grid Margin="20">
-
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
@@ -33,89 +39,116 @@
 
         <Menu Grid.Row="0">
             <MenuItem Header="Fișier">
-                <MenuItem Header="Ieșire"
-                          Click="Exit_Click"/>
+                <MenuItem Header="Ieșire" Click="Exit_Click"/>
             </MenuItem>
         </Menu>
 
-        <Grid Grid.Row="1">
-
+        <Grid Grid.Row="1" Margin="0 15 0 0">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="2*"/>
-                <ColumnDefinition Width="3*"/>
+                <ColumnDefinition Width="1.2*"/>
+                <ColumnDefinition Width="1.2*"/>
+                <ColumnDefinition Width="1.5*"/>
             </Grid.ColumnDefinitions>
 
-            <StackPanel Grid.Column="0"
-                        Margin="0 0 20 0">
-
-                <TextBlock Text="Adăugare Șofer"
+            <!-- ADAUGARE -->
+            <StackPanel Grid.Column="0" Margin="0 0 20 0">
+                <TextBlock Text="Adăugare șofer"
                            FontSize="24"
                            FontWeight="Bold"
-                           Margin="0 0 0 20"/>
+                           Margin="0 0 0 15"/>
 
                 <TextBlock Text="Nume"/>
                 <TextBox x:Name="txtNume"/>
 
-                <TextBlock Text="Telefon"/>
-                <TextBox x:Name="txtTelefon"/>
-
-                <TextBlock Text="Categorii Permis"/>
+                <TextBlock Text="Categorii permis"/>
                 <TextBox x:Name="txtCategorii"/>
 
                 <TextBlock Text="Kilometri"/>
                 <TextBox x:Name="txtKilometri"/>
 
-                <TextBlock Text="Tip Angajat"
-                           Margin="0 10 0 5"/>
+                <TextBlock Text="Tip șofer - ListBox"/>
+                <ListBox x:Name="lstTipSofer"
+                         Height="90"
+                         SelectionMode="Single">
+                    <ListBoxItem Content="Intern"/>
+                    <ListBoxItem Content="Extern"/>
+                    <ListBoxItem Content="Colaborator"/>
+                </ListBox>
 
-                <StackPanel Orientation="Horizontal">
-                    <RadioButton x:Name="rbIntern"
-                                 Content="Intern"
-                                 Margin="0 0 20 0"/>
-                    <RadioButton x:Name="rbExtern"
-                                 Content="Extern"/>
-                </StackPanel>
+                <TextBlock Text="Data angajării - DatePicker"/>
+                <DatePicker x:Name="dpDataAngajare"
+                            SelectedDateFormat="Short"
+                            Margin="0 5 0 12"/>
 
-                <TextBlock Text="Beneficii"
-                           Margin="0 15 0 5"/>
-
-                <CheckBox x:Name="cbBonus"
-                          Content="Prime Bonus"/>
-
-                <CheckBox x:Name="cbAsigurare"
-                          Content="Asigurare Medicală"/>
-
-                <Button Content="Adaugă"
+                <Button Content="Adaugă șofer"
                         Click="BtnAdauga_Click"/>
 
                 <TextBlock x:Name="txtMesaj"
-                           FontSize="16"
+                           FontSize="15"
                            FontWeight="Bold"
                            Margin="0 15 0 0"/>
-
             </StackPanel>
 
-            <StackPanel Grid.Column="1">
-
-                <TextBlock Text="Căutare Șofer"
+            <!-- MODIFICARE -->
+            <StackPanel Grid.Column="1" Margin="0 0 20 0">
+                <TextBlock Text="Modificare șofer"
                            FontSize="24"
                            FontWeight="Bold"
-                           Margin="0 0 0 20"/>
+                           Margin="0 0 0 15"/>
 
-                <TextBlock Text="Nume"/>
+                <TextBlock Text="Alege șofer - ComboBox"/>
+                <ComboBox x:Name="cmbSoferi"
+                          DisplayMemberPath="Nume"
+                          SelectionChanged="CmbSoferi_SelectionChanged"/>
 
+                <TextBlock Text="Nume nou"/>
+                <TextBox x:Name="txtNumeModifica"/>
+
+                <TextBlock Text="Categorii permis noi"/>
+                <TextBox x:Name="txtCategoriiModifica"/>
+
+                <TextBlock Text="Kilometri noi"/>
+                <TextBox x:Name="txtKilometriModifica"/>
+
+                <TextBlock Text="Tip șofer nou"/>
+                <ComboBox x:Name="cmbTipSoferModifica">
+                    <ComboBoxItem Content="Intern"/>
+                    <ComboBoxItem Content="Extern"/>
+                    <ComboBoxItem Content="Colaborator"/>
+                </ComboBox>
+
+                <TextBlock Text="Data actualizare"/>
+                <DatePicker x:Name="dpDataActualizare"
+                            SelectedDateFormat="Long"
+                            Margin="0 5 0 12"/>
+
+                <Button Content="Actualizează șofer"
+                        Click="BtnActualizeaza_Click"/>
+            </StackPanel>
+
+            <!-- LISTĂ / CĂUTARE -->
+            <StackPanel Grid.Column="2">
+                <TextBlock Text="Listă și căutare"
+                           FontSize="24"
+                           FontWeight="Bold"
+                           Margin="0 0 0 15"/>
+
+                <TextBlock Text="Caută după nume"/>
                 <TextBox x:Name="txtCautare"/>
 
                 <Button Content="Caută"
-                        Width="150"
+                        Width="160"
+                        HorizontalAlignment="Left"
                         Click="BtnCauta_Click"/>
 
+                <Button Content="Afișează toți șoferii"
+                        Width="180"
+                        HorizontalAlignment="Left"
+                        Click="BtnAfiseazaToti_Click"/>
+
                 <ListBox x:Name="lstSoferi"
-                         Margin="0 20 0 0"/>
-
+                         Height="430"/>
             </StackPanel>
-
         </Grid>
-
     </Grid>
 </Window>
